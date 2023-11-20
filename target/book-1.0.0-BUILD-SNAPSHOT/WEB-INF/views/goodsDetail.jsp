@@ -168,7 +168,16 @@
             <div class="line">
             </div>
             <div class="content_bottom">
-                리뷰
+                <div class="reply_subject">
+                    <h2>리뷰</h2>
+                </div>
+
+                <c:if test="${member != null}">
+                    <div class="reply_button_wrap">
+                        <button>리뷰 쓰기</button>
+                    </div>
+                </c:if>
+
             </div>
 
             <%-- 주문 --%>
@@ -301,6 +310,24 @@ $(".btn_buy").on("click", function (){
     let bookCount = $(".quantity_input").val();
     $(".order_form").find("input[name='orders[0].bookCount']").val(bookCount);
     $(".order_form").submit();
+
+});
+
+
+// 리뷰쓰기
+$(".reply_button_wrap").on("click", function (e){
+
+    e.preventDefault();
+
+    const memId = '${member.memId}';
+    const bookId = '${goodsInfo.bookId}';
+
+    let popUrl = "<c:url value='/replyEnroll/'/>" + memId + "?bookId=" + bookId;
+    console.log(popUrl);
+    let popOption = "width=490px, height=490px, top=300px, left=300px, scrollbars=yes";
+
+    // window(url, 팝업창 이름, 팝업창 관련 설정(크기, 스크롤방식 등))
+    window.open(popUrl, "리뷰 쓰기", popOption);
 
 });
 

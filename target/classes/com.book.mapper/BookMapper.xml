@@ -144,4 +144,11 @@
 
     </select>
 
+    <!-- 상품 id 이름 -->
+    <select id="getBookIdName" resultType="com.book.model.BookVO">
+
+        select bookId, bookName from book where bookId = #{bookId}
+
+    </select>
+
 </mapper>

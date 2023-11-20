@@ -108,6 +108,7 @@ public class BookController {
 
     }
 
+
     // 상품 상세
     @GetMapping("/goodsDetail/{bookId}")
     public String goodsDetailGet(@PathVariable("bookId")int bookId, Model model) {
@@ -115,6 +116,19 @@ public class BookController {
         model.addAttribute("goodsInfo", bookService.getGoodsInfo(bookId));
 
         return "/goodsDetail";
+
+    }
+
+
+    // 리뷰 쓰기
+    @GetMapping("/replyEnroll/{memId}")
+    public String replyEnrollWindowGet(@PathVariable("memId")String memId, int bookId, Model model) {
+
+        BookVO book = bookService.getBookIdName(bookId);
+        model.addAttribute("bookInfo", book);
+        model.addAttribute("memId", memId);
+
+        return "/replyEnroll";
 
     }
 

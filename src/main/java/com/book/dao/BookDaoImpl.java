@@ -83,6 +83,13 @@ public class BookDaoImpl implements BookDao {
 
     }
 
+    // 상품 id 이름
+    @Override
+    public BookVO getBookIdName(int bookId) {
+
+        return session.selectOne(namespace+"getBookIdName", bookId);
+
+    }
 
 
 }

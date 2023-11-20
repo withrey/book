@@ -131,4 +131,12 @@ public class BookServiceImpl implements BookService {
 
     }
 
+    // 상품 id 이름
+    @Override
+    public BookVO getBookIdName(int bookId) {
+
+        return bookDao.getBookIdName(bookId);
+
+    }
+
 }
