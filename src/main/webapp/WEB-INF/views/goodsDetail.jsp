@@ -178,6 +178,21 @@
                     </div>
                 </c:if>
 
+                <div class="reply_not_div">
+
+                </div>
+
+                <ul class="reply_content_ul">
+
+                </ul>
+
+                <div class="reply_pageInfo_div">
+                    <ul class="pageMaker">
+
+
+                    </ul>
+                </div>
+
             </div>
 
             <%-- 주문 --%>
@@ -234,6 +249,7 @@ $(document).ready(function (){
 
     // 이미지 삽입
     const bobj = $(".image_wrap");
+    // 이미지가 있는 경우
     if(bobj.data("bookid")) {
 
         const uploadPath = bobj.data("path");
@@ -243,11 +259,13 @@ $(document).ready(function (){
         const fileCallPath = encodeURIComponent(uploadPath + "/s_" + uuid + "_" + fileName);
         bobj.find("img").attr('src', '<c:url value="/display?fileName="/>' + fileCallPath);
 
+    // 이미지가 없는 경우
     } else {
 
         bobj.find("img").attr('src', '<c:url value="/img/goodsNoImage.png"/>');
 
     }
+
 
     // 출간일
     const year = "${goodsInfo.bookDate}";
@@ -257,6 +275,16 @@ $(document).ready(function (){
     let bookDate = yearArray[0] + "년 " + yearArray[1] + "월 " + yearArray[2] + "일";
 
     $(".bookDate").html(bookDate);
+
+
+    // 리뷰 댓글 리스트 출력
+    const bookId = '${goodsInfo.bookId}';
+
+    $.getJSON('<c:url value="/reply/list"/>', {bookId : bookId}, function (obj){
+
+        makeReplyContent(obj);
+
+    });
 
 });
 
@@ -322,12 +350,124 @@ $(".reply_button_wrap").on("click", function (e){
     const memId = '${member.memId}';
     const bookId = '${goodsInfo.bookId}';
 
-    let popUrl = "<c:url value='/replyEnroll/'/>" + memId + "?bookId=" + bookId;
-    console.log(popUrl);
-    let popOption = "width=490px, height=490px, top=300px, left=300px, scrollbars=yes";
+    $.ajax({
+        data: {
+            bookId : bookId,
+            memId : memId
+        },
+        url: '<c:url value="/reply/check"/>',
+        type: 'POST',
+        success: function (result){
+            if(result === '1'){
 
-    // window(url, 팝업창 이름, 팝업창 관련 설정(크기, 스크롤방식 등))
-    window.open(popUrl, "리뷰 쓰기", popOption);
+                alert("이미 등록된 리뷰가 존재합니다")
+
+            } else if(result === '0'){
+
+                let popUrl = "<c:url value='/replyEnroll/'/>" + memId + "?bookId=" + bookId;
+                console.log(popUrl);
+                let popOption = "width=490px, height=490px, top=300px, left=300px, scrollbars=yes";
+
+                // window(url, 팝업창 이름, 팝업창 관련 설정(크기, 스크롤방식 등))
+                window.open(popUrl, "리뷰 쓰기", popOption);
+
+            }
+        }
+    });
+
+
+// 댓글 페이지 정보
+    const cri = {
+        bookId : '${goodsInfo.bookId}',
+        pageNum : 1,
+        amount : 10
+    }
+
+
+// 댓글 데이터 서버 요청 및 댓글 동적 생성 메서드
+    let replyListInit = function (){
+        $.getJSON('<c:url value="/reply/list"/>', cri, function (obj){
+
+            makeReplyContent(obj);
+
+        });
+    }
+
+
+// 댓글(리뷰) 동적 생성 메서드
+    function makeReplyContent(obj){
+
+        // makeReplyContent(obj);
+        if(obj.list.length === 0) {
+
+            $(".reply_not_div").html('<span>리뷰가 없습니다.</span>');
+            $(".reply_content_ul").html('');
+            $(".pageMaker").html('');
+
+        } else {
+
+            $(".reply_not_div").html('');
+            const list = obj.list;
+            const pf = obj.pageInfo;
+            const userId = '${member.memId}';
+
+            // 리스트
+            let reply_list = '';
+
+            $(list).each(function (i, obj){
+                reply_list += '<li>';
+                reply_list += '<div class="comment_wrap">';
+                reply_list += '<div class="reply_top">';
+                reply_list += '<span class="id_span">' + obj.memId + '</span>';
+                reply_list += '<span class="date_span">' + obj.regDate + '</span>';
+                reply_list += '<span class="rating_span">평점 : <span class="rating_value_span">' + obj.rating + '</span>점</span>';
+                if(obj.memId === userId){
+                    reply_list += '<a class="update_reply_btn" href="' + obj.replyId + '">수정</a><a class="delete_reply_btn" href="' + obj.replyId + '">삭제</a>';
+                }
+                reply_list += '</div>';
+                reply_list += '<div class="reply_bottom">';
+                reply_list += '<div class="reply_bottom_txt">' + obj.content + '</div>';
+                reply_list += '</div>';
+                reply_list += '</div>';
+                reply_list += '</li>';
+            });
+
+            $(".reply_content_ul").html(reply_list);
+
+            // 페이지 버튼
+            let reply_pageMaker = '';
+
+            // 이전
+            if(pf.prev){
+                let prev_num = pf.pageStart - 1;
+                reply_pageMaker += '<li class="pageMaker_btn prev">';
+                reply_pageMaker += '<a href="' + prev_num + '">이전</a>';
+                reply_pageMaker += '</li>';
+            }
+
+            // number btn
+            for(let i = pf.pageStart; i < pf.pageEnd + 1; i++){
+                reply_pageMaker += '<li class="pageMaker_btn ';
+                if(pf.cri.pageNum === i){
+                    reply_pageMaker += 'active';
+                }
+                reply_pageMaker += '">';
+                reply_pageMaker += '<a href="' + i + '">' + i + '</a>';
+                reply_pageMaker += '</li>';
+            }
+
+            // 다음
+            if(pf.next){
+                let next_num = pf.pageEnd + 1;
+                reply_pageMaker += '<li class="pageMaker_btn next">';
+                reply_pageMaker += '<a href="' + next_num + '">다음</a>';
+                reply_pageMaker += '</li>';
+            }
+
+            $(".pageMaker").html(reply_pageMaker);
+
+        }
+    }
 
 });
 

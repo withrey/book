@@ -176,6 +176,10 @@ $(".enroll_btn").on("click", function (e) {
         type : 'POST',
         url : '<c:url value="/reply/enroll"/>',
         success : function(result){
+
+            // 댓글 초기화
+            $(opener.location).attr("href", "javascript:replyListInit();");
+
             window.close();
         }
     });

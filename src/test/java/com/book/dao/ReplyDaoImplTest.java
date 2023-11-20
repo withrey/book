@@ -18,7 +18,7 @@ public class ReplyDaoImplTest {
     public void enrollReplyTest() {
 
         String id = "2222";
-        int bookId = 964;
+        int bookId = 963;
         double rating = 3.5;
         String content = "댓글 테스트";
 
