@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.mapper.ReplyMapper">
+
+    <!-- 댓글등록 -->
+    <insert id="enrollReply">
+
+        insert into book_reply(bookId, memId, content, rating)
+        values (#{bookId}, #{memId}, #{content}, #{rating})
+
+    </insert>
+
+    <!-- 댓글 존재 체크 -->
+    <select id="checkReply" resultType="integer">
+
+        select replyId from book_reply
+        where memId = #{memId} and bookId = #{bookId}
+
+    </select>
+
+    <!-- 댓글 페이징 -->
+    <select id="getReplyList" resultType="com.book.model.ReplyDTO">
+
+        select replyId, bookId, memId, content, rating, regDate
+        from book_reply
+        where bookId = #{bookId}
+        order by regDate desc
+        limit #{skip}, #{amount}
+
+    </select>
+
+    <!-- 댓글 총 갯수(페이징) -->
+    <select id="getReplyTotal" resultType="int">
+
+        select count(*) from book_reply where bookId = #{bookId}
+
+    </select>
+
+</mapper>

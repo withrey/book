@@ -1,5 +1,7 @@
 package com.book.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ReplyDTO {
@@ -10,6 +12,7 @@ public class ReplyDTO {
 
     private String memId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date regDate;
 
     // 댓글 내용
