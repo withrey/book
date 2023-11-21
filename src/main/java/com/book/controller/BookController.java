@@ -1,11 +1,9 @@
 package com.book.controller;
 
-import com.book.model.AttachImageVO;
-import com.book.model.BookVO;
-import com.book.model.Criteria;
-import com.book.model.PageDTO;
+import com.book.model.*;
 import com.book.service.AttachService;
 import com.book.service.BookService;
+import com.book.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,8 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private ReplyService replyService;
 
     // 메인 페이지 이동
     @GetMapping("/main")
@@ -129,6 +129,19 @@ public class BookController {
         model.addAttribute("memId", memId);
 
         return "/replyEnroll";
+
+    }
+
+    // 리뷰 수정 팝업창
+    @GetMapping("/replyUpdate")
+    public String replyUpdateWindowGet(ReplyDTO dto, Model model) {
+
+        BookVO book = bookService.getBookIdName(dto.getBookId());
+        model.addAttribute("bookInfo", book);
+        model.addAttribute("replyInfo", replyService.getUpdateReply(dto.getReplyId()));
+        model.addAttribute("memId", dto.getMemId());
+
+        return "/replyUpdate";
 
     }
 

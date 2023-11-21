@@ -2,6 +2,7 @@ package com.book.dao;
 
 import com.book.model.Criteria;
 import com.book.model.ReplyDTO;
+import com.book.model.UpdateReplyDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -41,6 +42,41 @@ public class ReplyDaoImpl implements ReplyDao{
     public int getReplyTotal(int bookId) {
 
         return session.selectOne(namespace+"getReplyTotal", bookId);
+
+    }
+
+    // 댓글 수정
+    public int updateReply(ReplyDTO dto) {
+
+        return session.update(namespace+"updateReply", dto);
+
+    }
+
+    // 댓글 한개 정보(수정 페이지)
+    public ReplyDTO getUpdateReply(int replyId) {
+
+        return session.selectOne(namespace+"getUpdateReply", replyId);
+
+    }
+
+    // 댓글 삭제
+    public int deleteReply(int replyId) {
+
+        return session.delete(namespace+"deleteReply", replyId);
+
+    }
+
+    // 평점 평균 구하기
+    public Double getRatingAverage(int bookId) {
+
+        return session.selectOne(namespace+"getRatingAverage", bookId);
+
+    }
+
+    // 평점 평균 반영
+    public int updateRating(UpdateReplyDTO dto) {
+
+        return session.update(namespace+"updateRating", dto);
 
     }
 

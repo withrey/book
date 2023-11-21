@@ -182,22 +182,6 @@
 
                 <ul class="reply_content_ul">
 
-                    <%--<li>
-                        <div class="comment_wrap">
-                            <div class="reply_top">
-                                <span class="id_span">admin</span>
-                                <span class="date_span">2023-08-21</span>
-                                <span class="rating_span">평점 : <span class="rating_value_span">4</span>점</span>
-                                <a class="update_reply_btn">수정</a><a class="delete_reply_btn">삭제</a>
-                            </div>
-                            <div class="reply_bottom">
-                                <div class="reply_bottom_txt">
-                                    테스트입니다. 한번에 잘 되기를...
-                                </div>
-                            </div>
-                        </div>
-                    </li>--%>
-
                 </ul>
 
                 <div class="reply_pageInfo_div">
@@ -387,6 +371,41 @@ $(".reply_button_wrap").on("click", function (e){
             }
         }
     });
+});
+
+
+// 리뷰 수정 버튼
+$(document).on("click", ".update_reply_btn", function (e){
+
+    e.preventDefault();
+    let replyId = $(this).attr("href");
+    let popUrl = "<c:url value='/replyUpdate?replyId='/>" + replyId + "&bookId=" + "${goodsInfo.bookId}" + "&memId" + "${member.memId}";
+    let popOption = "width=490px, height=490px, top=300px, left=300px, scrollbars=yes";
+
+    window.open(popUrl, "리뷰 수정", popOption);
+
+});
+
+
+// 리뷰 삭제 버튼
+$(document).on("click", ".delete_reply_btn", function (e){
+
+    e.preventDefault();
+    let replyId = $(this).attr("href");
+
+    $.ajax({
+        data : {
+            replyId : replyId,
+            bookId : '${goodsInfo.bookId}'
+        },
+        url : '<c:url value="/reply/delete"/>',
+        type : 'POST',
+        success : function (result){
+            replyListInit();
+            alert("삭제가 완료되었습니다.");
+        }
+    });
+
 });
 
 

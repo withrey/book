@@ -15,6 +15,15 @@ public interface ReplyService {
     // 댓글 페이징
     ReplyPageDTO replyList(Criteria cri);
 
+    // 댓글 수정
+    int updateReply(ReplyDTO dto);
+
+    // 댓글 한개 정보(수정 페이지)
+    ReplyDTO getUpdateReply(int replyId);
+
+    // 댓글 삭제
+    int deleteReply(ReplyDTO dto);
+
 
 
 }

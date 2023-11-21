@@ -1,10 +1,7 @@
 package com.book.service;
 
 import com.book.dao.ReplyDao;
-import com.book.model.Criteria;
-import com.book.model.PageDTO;
-import com.book.model.ReplyDTO;
-import com.book.model.ReplyPageDTO;
+import com.book.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +17,8 @@ public class ReplyServiceImpl implements ReplyService {
     public int enrollReply(ReplyDTO replyDTO) {
 
         int result = replyDao.enrollReply(replyDTO);
+
+        setRating(replyDTO.getBookId());
 
         return result;
 
@@ -54,4 +53,54 @@ public class ReplyServiceImpl implements ReplyService {
 
     }
 
+    // 댓글 수정
+    @Override
+    public int updateReply(ReplyDTO dto) {
+
+        int result = replyDao.updateReply(dto);
+
+        setRating(dto.getBookId());
+
+        return result;
+
+    }
+
+    // 댓글 한개 정보(수정 페이지)
+    @Override
+    public ReplyDTO getUpdateReply(int replyId) {
+
+        return replyDao.getUpdateReply(replyId);
+
+    }
+
+    // 댓글 삭제
+    @Override
+    public int deleteReply(ReplyDTO dto) {
+
+        int result = replyDao.deleteReply(dto.getReplyId());
+
+        setRating(dto.getBookId());
+
+        return result;
+    }
+
+    // 댓글 평점
+    public void setRating(int bookId) {
+
+        Double ratingAvg = replyDao.getRatingAverage(bookId);
+
+        if(ratingAvg == null) {
+            ratingAvg = 0.0;
+        }
+
+        ratingAvg = (double)(Math.round(ratingAvg*10));
+        ratingAvg = ratingAvg / 10;
+
+        UpdateReplyDTO urd = new UpdateReplyDTO();
+        urd.setBookId(bookId);
+        urd.setRatingAvg(ratingAvg);
+
+        replyDao.updateRating(urd);
+
+    }
 }
