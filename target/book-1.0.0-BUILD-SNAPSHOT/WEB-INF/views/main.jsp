@@ -10,11 +10,17 @@
     <title>book</title>
     <link rel="stylesheet" href="<c:url value='/css/main.css'/>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+    <%-- slick 기본 css --%>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <%-- slick 테마 css --%>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 
     <script
             src="https://code.jquery.com/jquery-3.4.1.js"
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
             crossorigin="anonymous"></script>
+    <%-- slick js --%>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 </head>
 <body>
@@ -123,7 +129,55 @@
             </div>
         </div>
         <div class="content_area">
-            <h1>content area</h1>
+            <%-- 슬라이드 배너 --%>
+            <div class="slide_div_wrap">
+                <div class="slide_div">
+                    <div>
+                        <a>
+                            <img src="<c:url value='/img/banner1.jpg'/>">
+                        </a>
+                    </div>
+                    <div>
+                        <a>
+                            <img src="<c:url value='/img/banner2.jpg'/>">
+                        </a>
+                    </div>
+                    <div>
+                        <a>
+                            <img src="<c:url value='/img/banner3.jpg'/>">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ls_wrap">
+                <div class="ls_div_subject">
+                    평점순 상품
+                </div>
+                <div class="ls_div">
+                    <c:forEach items="${ls}" var="ls">
+                        <a href="<c:url value='/goodsDetail/${ls.bookId}'/>">
+                            <div class="ls_div_content_wrap">
+                                <div class="ls_div_content">
+                                    <div class="image_wrap" data-bookid="${ls.imageList[0].bookId}" data-path="${ls.imageList[0].uploadPath}" data-uuid="${ls.imageList[0].uuid}" data-filename="${ls.imageList[0].fileName}">
+                                        <img>
+                                    </div>
+                                    <div class="ls_category">
+                                        ${ls.cateName}
+                                    </div>
+                                    <div class="ls_rating">
+                                        ${ls.ratingAvg}
+                                    </div>
+                                    <div class="ls_bookName">
+                                        ${ls.bookName}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </c:forEach>
+                </div>
+            </div>
+
         </div>
 
         <!-- Footer 영역 -->
@@ -169,6 +223,52 @@
 
 <script>
 $(document).ready(function (){
+
+    // 평점순 정렬
+    $(".ls_div").slick({
+
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        prevArrow: "<button type'button' class='ls_div_content_prev'>이전</button>",
+        nextArrow: "<button type'button' class='ls_div_content_next'>다음</button>"
+
+    });
+
+
+    // 배너 움직임
+    $(".slide_div").slick(
+        {
+            dots: true,
+            autoplay: true,
+            // 배너 넘어가는 속도 - 2000은 2초
+            autoplaySpeed: 2000
+        }
+    );
+
+
+    // 이미지 삽입
+    $(".image_wrap").each(function(i, obj){
+
+        const bobj = $(obj);
+
+        if(bobj.data("bookid")){
+
+            const uploadPath = bobj.data("path");
+            const uuid = bobj.data("uuid");
+            const fileName = bobj.data("filename");
+
+            const fileCallPath = encodeURIComponent(uploadPath + "/s_" + uuid + "_" + fileName);
+
+            $(this).find("img").attr('src', '<c:url value="/display?fileName="/>' + fileCallPath);
+
+        } else {
+
+            $(this).find("img").attr('src', '<c:url value="/img/goodsNoImage.png"/>');
+
+        }
+
+    });
+
 
     // 회원가입 성공
     let join_result = '${join_result}';
