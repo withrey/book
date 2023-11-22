@@ -37,6 +37,7 @@ public class BookController {
 
         model.addAttribute("cate1", bookService.getCateCode1());
         model.addAttribute("cate2", bookService.getCateCode2());
+        model.addAttribute("ls", bookService.lilkeSelect());
 
     }
 

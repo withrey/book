@@ -1,9 +1,6 @@
 package com.book.dao;
 
-import com.book.model.BookVO;
-import com.book.model.CateFilterDTO;
-import com.book.model.CateVO;
-import com.book.model.Criteria;
+import com.book.model.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -88,6 +85,14 @@ public class BookDaoImpl implements BookDao {
     public BookVO getBookIdName(int bookId) {
 
         return session.selectOne(namespace+"getBookIdName", bookId);
+
+    }
+
+    // 평점순 상품 정보
+    @Override
+    public List<SelectDTO> likeSelect() {
+
+        return session.selectList(namespace+"likeSelect");
 
     }
 

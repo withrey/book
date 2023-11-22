@@ -1,9 +1,6 @@
 package com.book.service;
 
-import com.book.model.BookVO;
-import com.book.model.CateFilterDTO;
-import com.book.model.CateVO;
-import com.book.model.Criteria;
+import com.book.model.*;
 
 import java.util.List;
 
@@ -29,5 +26,8 @@ public interface BookService {
 
     // 상품 id 이름
     BookVO getBookIdName(int bookId);
+
+    // 평점순 상품 정보
+    List<SelectDTO> lilkeSelect();
 
 }

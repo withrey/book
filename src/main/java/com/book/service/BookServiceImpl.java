@@ -139,4 +139,23 @@ public class BookServiceImpl implements BookService {
 
     }
 
+    // 평점순 상품 정보
+    @Override
+    public List<SelectDTO> lilkeSelect() {
+
+        List<SelectDTO> list = bookDao.likeSelect();
+
+        list.forEach(dto -> {
+
+            int bookId = dto.getBookId();
+            List<AttachImageVO> imageList = attachDao.getAttachList(bookId);
+            dto.setImageList(imageList);
+
+        });
+
+        return list;
+
+    }
+
+
 }
