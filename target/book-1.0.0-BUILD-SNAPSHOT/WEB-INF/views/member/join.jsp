@@ -33,18 +33,19 @@
             <div class="id_wrap">
                 <div class="id_name">아이디</div>
                 <div class="id_input_box">
-                    <input class="id_input" name="memId">
+                    <input class="id_input" name="memId" placeholder="사용할 아이디를 3자리 이상 입력해주세요">
                 </div>
                 <%-- 아이디 중복검사 메시지 --%>
                 <span class="id_input_re_1">사용 가능한 아이디입니다.</span>
                 <span class="id_input_re_2">아이디가 이미 존재합니다.</span>
+                <span class="id_input_re_3">아이디의 길이는 3 이상이어야 합니다.</span>
                 <span class="final_id_ck">아이디를 입력해주세요.</span>
             </div>
 
             <div class="pw_wrap">
                 <div class="pw_name">비밀번호</div>
                 <div class="pw_input_box">
-                    <input class="pw_input" name="memPw" type="password">
+                    <input class="pw_input" name="memPw" type="password" placeholder="사용할 비밀번호를 입력해주세요">
                 </div>
                 <span class="final_pw_ck">비밀번호를 입력해주세요.</span>
             </div>
@@ -52,7 +53,7 @@
             <div class="pwck_wrap">
                 <div class="pwck_name">비밀번호 확인</div>
                 <div class="pwck_input_box">
-                    <input class="pwck_input" type="password">
+                    <input class="pwck_input" type="password" placeholder="비밀번호를 한번 더 입력해주세요">
                 </div>
                 <span class="final_pwck_ck">비밀번호 확인을 입력해주세요.</span>
                 <span class="pwck_input_re_1">비밀번호가 일치합니다.</span>
@@ -62,7 +63,7 @@
             <div class="user_wrap">
                 <div class="user_name">이름</div>
                 <div class="user_input_box">
-                    <input class="user_input" name="memName">
+                    <input class="user_input" name="memName" placeholder="이름을 입력해주세요">
                 </div>
                 <span class="final_name_ck">이름을 입력해주세요.</span>
             </div>
@@ -71,7 +72,7 @@
                 <div class="user_birth">생일</div>
                 <div class="birth_input_box">
 <%--                    <input class="birth_input" name="memBirth">--%>
-                    <input class="birth_input" name="memBirth" autocomplete="off" readonly="readonly">
+                    <input class="birth_input" name="memBirth" autocomplete="off" readonly="readonly" placeholder="생일을 선택해주세요">
                 </div>
                 <span class="final_birth_ck">생일을 선택해주세요.</span>
             </div>
@@ -79,13 +80,13 @@
             <div class="mail_wrap">
                 <div class="mail_name">이메일</div>
                 <div class="mail_input_box">
-                    <input class="mail_input" name="memEmail">
+                    <input class="mail_input" name="memEmail" placeholder="사용하시는 이메일을 입력해주세요">
                 </div>
                 <span class="final_mail_ck">이메일을 입력해주세요.</span>
                 <span class="mail_input_box_warn"></span>
                 <div class="mail_check_wrap">
                     <div class="mail_check_input_box" id="mail_check_input_box_false">
-                        <input class="mail_check_input" disabled="disabled">
+                        <input class="mail_check_input" disabled="disabled" placeholder="이메일로 받으신 인증번호를 입력해주세요">
                     </div>
                     <div class="mail_check_button">
                         <span>인증번호 전송</span>
@@ -99,7 +100,7 @@
                 <div class="address_name">주소</div>
                 <div class="address_input_1_wrap">
                     <div class="address_input_1_box">
-                        <input class="address_input_1" name="memAddr1" readonly="readonly">
+                        <input class="address_input_1" name="memAddr1" readonly="readonly" placeholder="주소 찾기를 눌러주세요">
                     </div>
                     <div class="address_button" onclick="execution_daum_address()">
                         <span>주소 찾기</span>
@@ -113,7 +114,7 @@
                 </div>
                 <div class ="address_input_3_wrap">
                     <div class="address_input_3_box">
-                        <input class="address_input_3" name="memAddr3" readonly="readonly">
+                        <input class="address_input_3" name="memAddr3" readonly="readonly" placeholder="상세주소를 입력해주세요">
                     </div>
                 </div>
                 <span class="final_addr_ck">주소를 입력해주세요.</span>
@@ -260,6 +261,15 @@ $(".id_input").on("propertychange change keyup paste input", function (){
     var memId = $(".id_input").val();
     var data = {memId : memId};
 
+    // 아이디 길이 3 이상
+    if(memId.valueOf().length < 3) {
+        $('.id_input_re_3').css("display","inline-block");
+        $('.id_input_re_1').css("display","none");
+        $('.id_input_re_2').css("display","none");
+
+        return false;
+    }
+
     $.ajax({
         type : "post",
         url : "<c:url value='/member/memberIdChk'/>",
@@ -268,10 +278,12 @@ $(".id_input").on("propertychange change keyup paste input", function (){
             if(result != 'fail'){
                 $('.id_input_re_1').css("display","inline-block");
                 $('.id_input_re_2').css("display","none");
+                $('.id_input_re_3').css("display","none");
                 idckCheck = true;
             } else {
                 $('.id_input_re_2').css("display","inline-block");
                 $('.id_input_re_1').css("display","none");
+                $('.id_input_re_3').css("display","none");
                 idckCheck = false;
             }
         }

@@ -76,7 +76,7 @@
                                 <option value="T">책 제목</option>
                                 <option value="A">작가</option>
                             </select>
-                            <input type="text" name="keyword">
+                            <input type="text" name="keyword" placeholder="키워드를 입력해주세요">
                             <button class="btn search_btn">검 색</button>
                         </div>
                     </form>
@@ -145,6 +145,11 @@
                     <div>
                         <a>
                             <img src="<c:url value='/img/banner3.jpg'/>">
+                        </a>
+                    </div>
+                    <div>
+                        <a>
+                            <img src="<c:url value='/img/banner4.jpg'/>">
                         </a>
                     </div>
                 </div>
