@@ -51,6 +51,19 @@ public class BookVO {
     private List<AttachImageVO> imageList;
 
 
+
+    private double ratingAvg;
+
+    public double getRatingAvg() {
+        return ratingAvg;
+    }
+
+    public void setRatingAvg(double ratingAvg) {
+        this.ratingAvg = ratingAvg;
+    }
+
+
+
     public List<AttachImageVO> getImageList() {
         return imageList;
     }
@@ -171,7 +184,6 @@ public class BookVO {
         this.cateName = cateName;
     }
 
-
     @Override
     public String toString() {
         return "BookVO{" +
@@ -190,6 +202,29 @@ public class BookVO {
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +
                 ", imageList=" + imageList +
+                ", ratingAvg=" + ratingAvg +
                 '}';
     }
+
+
+    //    @Override
+//    public String toString() {
+//        return "BookVO{" +
+//                "bookId=" + bookId +
+//                ", bookName='" + bookName + '\'' +
+//                ", authorId=" + authorId +
+//                ", authorName='" + authorName + '\'' +
+//                ", bookDate='" + bookDate + '\'' +
+//                ", bookPuble='" + bookPuble + '\'' +
+//                ", cateCode='" + cateCode + '\'' +
+//                ", cateName='" + cateName + '\'' +
+//                ", bookPrice=" + bookPrice +
+//                ", bookStock=" + bookStock +
+//                ", bookDiscount=" + bookDiscount +
+//                ", bookInfo='" + bookInfo + '\'' +
+//                ", regDate=" + regDate +
+//                ", updateDate=" + updateDate +
+//                ", imageList=" + imageList +
+//                '}';
+//    }
 }

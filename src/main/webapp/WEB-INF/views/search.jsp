@@ -167,9 +167,17 @@
                                         </div>
                                     </td>
                                     <td class="info">
+
+                                        <div class="rating">
+                                            평점 ${list.ratingAvg} 점
+                                        </div>
+
+                                        <!--
                                         <div class="rating">
                                             평점
                                         </div>
+                                        -->
+
                                     </td>
                                     <td class="price">
                                         <div class="org_price">

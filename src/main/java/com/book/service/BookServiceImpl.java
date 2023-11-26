@@ -3,6 +3,7 @@ package com.book.service;
 import com.book.dao.AdminDao;
 import com.book.dao.AttachDao;
 import com.book.dao.BookDao;
+import com.book.dao.ReplyDao;
 import com.book.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,11 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private AdminDao adminDao;
+
+    //
+    @Autowired
+    private ReplyDao replyDao;
+
 
     // 상품 검색
     @Override
@@ -51,6 +57,10 @@ public class BookServiceImpl implements BookService {
 
             List<AttachImageVO> imageList = attachDao.getAttachList(bookId);
 
+            // 도서 평점
+            Double selectList = replyDao.getRatingAverage(bookId);
+
+            bookVO.setRatingAvg(selectList);
             bookVO.setImageList(imageList);
 
         });

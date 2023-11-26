@@ -110,9 +110,6 @@
 
 <script>
 
-let moveForm = $("#moveForm");
-
-
 $(document).ready(function (){
 
     // 등록 성공 이벤트
@@ -142,6 +139,20 @@ $(document).ready(function (){
     if(delete_result == 1) {
         alert("삭제 완료");
     }
+
+});
+
+let moveForm = $("#moveForm");
+
+
+
+// 페이지 이동 버튼
+$(".pageMaker_btn a").on("click",function(e){
+
+    e.preventDefault();
+
+    moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+    moveForm.submit();
 
 });
 
