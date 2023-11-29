@@ -90,7 +90,7 @@
                 <c:if test="${member != null}">
                     <div class="login_success_area">
                         <span>회원 : ${member.memName}</span>
-                        <span>장바구니</span>
+                        <span><a href="<c:url value='/cart/${member.memId}'/>">장바구니</a></span>
                         <a href="<c:url value='/member/logout'/>">로그아웃</a>
                     </div>
                 </c:if>
