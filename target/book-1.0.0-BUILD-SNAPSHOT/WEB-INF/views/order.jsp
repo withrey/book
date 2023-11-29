@@ -104,7 +104,7 @@
 
         <div class="content_area">
 
-            <div class="content_subject"><span>장바구니</span></div>
+            <div class="content_subject"><span>결제</span></div>
 
             <div class="content_main">
                 <%-- 회원 정보 --%>
