@@ -200,7 +200,7 @@
 
 input[name='memBirth'] {
     width: 80%;
-    text-align: center;
+    text-align: left;
 }
 
 /* 메일 영역 */
