@@ -274,6 +274,12 @@ $(document).ready(function (){
 
     });
 
+    // 주문 성공
+    let msg = "${msg}";
+    if(msg == "order_OK"){
+        alert("주문해 주셔서 감사합니다");
+    }
+
 
     // 회원가입 성공
     let join_result = '${join_result}';
